@@ -18,14 +18,16 @@ let posts = [
   }
 ]
 
-module.exports = function (app) {
+module.exports =
+
+function (app) {
   app.get('/posts', (req, res, next) => {
     return res.status(200).json(posts)
   })
 
   app.post('/posts', (req, res, next) => {
     const { body } = req
-    body.id = posts.length + 1
+    body.id = posts.length + 10
     posts.push(body)
     return res.status(201).json(body)
   })
@@ -54,4 +56,11 @@ module.exports = function (app) {
     }
     return res.status(404).json('Not found')
   })
+
+  app.put('/posts/:id', function(req, res) {
+    const { id } = req.params
+    const change = posts.map(element => element.id == id ? element = req.body : element)
+    posts = change
+    return res.status(200).json(change)       
+ });
 }
